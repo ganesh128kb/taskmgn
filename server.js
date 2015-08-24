@@ -33,10 +33,10 @@ app.use('/public',express.static(__dirname+'/public')); // Folder Access
 /*--------Mysql Connection--------*/
 var connection = mysql.createPool({
     connectionLimit: 3,
-    host: 'localhost',
-    user: 'root123',
-    password: 'root123',
-    database: 'dbcms'
+    host: 'us-cdbr-iron-east-02.cleardb.net',
+    user: 'bd2ae73e3c90c6',
+    password: '37758202',
+    database: 'heroku_cfcebe98f88ba97'
 });
 
 /*------Pages-------*/
