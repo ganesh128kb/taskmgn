@@ -1,7 +1,7 @@
 app.controller('ListmanagementController',function($scope,webService){
 	var data = sessionStorage.getItem('loginSession');					
 	if(data != "success"){
-			window.location.assign('/login');	
+		window.location.assign('/');	
 	}
   /*--------Ajax Query ------*/
   $scope.list = webService.query();  
@@ -75,7 +75,8 @@ app.controller('ListmanagementController',function($scope,webService){
   } 
   
   $scope.logHandler = function(){
-	  
+	sessionStorage.clear();	
+	window.location.assign('/');  
   }
 })
 
