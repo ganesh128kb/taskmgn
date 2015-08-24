@@ -21,3 +21,6 @@ body, html { height: 100%; }
 .projList ul li a{ padding: 0 0 0 10px; position: relative; top: 16px; width: 25px;}
 .projList ul li ul{padding-left: 24px; padding-top: 7px;}
 .frmField input{ margin-right:5px}
+.panel-success>.panel-heading{padding: 15px; position:relative}
+.logBtn{position: absolute; right: 9px; top: 5px;}
+
