@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="febeApp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&bull; Login &bull;</title>
+<link href="../public/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="../public/css/style.css" rel="stylesheet" type="text/css">
+<script src="../public/script/jquery.min.js"></script>
+<script src="../public/script/bootstrap.min.js"></script>
+<script src="../public/script/angular.js"></script>
+<script src="../public/script/resource.js"></script>
+<script src="../public/module/app.js"></script>
+<script src="../public/controller/loginCtrl.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-controller="LoginController" class="bgHome">
+<div class="container">
+  <div class="card card-container"> <img id="profile-img" class="profile-img-card" src="../public/img/avatar_2x.png">
+    <p id="profile-name" class="profile-name-card"></p>
+    <form class="form-signin" novalidate>
+      <span id="reauth-email" class="reauth-email"></span>
+      <input type="text" class="form-control" ng-model="myForm.txtEmail" placeholder="Email address">
+      <input type="password" class="form-control" ng-model="myForm.txtPass" placeholder="Password">
+      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" ng-click="myForm.formSubmit()">Sign in</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
