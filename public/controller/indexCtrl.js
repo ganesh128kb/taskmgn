@@ -1,5 +1,8 @@
 app.controller('ListmanagementController',function($scope,webService){
-	
+	var data = sessionStorage.getItem('loginSession');					
+	if(data != "success"){
+			window.location.assign('/login');	
+	}
   /*--------Ajax Query ------*/
   $scope.list = webService.query();  
   $scope.list.$promise.then(function(result){
@@ -69,7 +72,11 @@ app.controller('ListmanagementController',function($scope,webService){
   //Records Edit
   $scope.editHandler = function(index){
 	 console.log(index);
-  }  
+  } 
+  
+  $scope.logHandler = function(){
+	  
+  }
 })
 
 app.directive('listCustom',function(){
