@@ -20,7 +20,7 @@ app.service('loginService',function(webService){
 						window.location.assign('/index');	
 					}										
 				}else{
-					alert("Username/Password is wrong");
+					alert("Have you registered yet");
 				}
 				
 			});
