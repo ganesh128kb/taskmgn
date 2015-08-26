@@ -20,7 +20,7 @@ app.service('loginService',function(webService){
 						window.location.assign('/index');	
 					}										
 				}else{
-					alert("Have you registered yet");
+					alert("Have you registered yet! Please Sing Up");
 				}
 				
 			});
