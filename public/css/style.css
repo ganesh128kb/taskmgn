@@ -23,4 +23,6 @@ body, html { height: 100%; }
 .frmField input{ margin-right:5px}
 .panel-success>.panel-heading{padding: 15px; position:relative}
 .logBtn{position: absolute; right: 9px; top: 5px;}
+.txtLog{position: absolute; right: 97px; top: 12px;}
+.txtLog strong{ text-transform:capitalize}
 

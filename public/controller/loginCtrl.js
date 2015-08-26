@@ -2,19 +2,20 @@
 app.service('loginService',function(webService){		
 	this.SignIn = function(param){
 		if(!param.txtEmail){
-			alert("Please enter the Username");
+			alert("Please Enter the Username");
 			return false;
 		}
 		if(!param.txtPass){
-			alert("Please enter the Password");
+			alert("Please Enter the Password");
 			return false;
 		}
 		if(param.txtEmail && param.txtPass){
 			var Obj = {'txtEmail':param.txtEmail,'txtPass':param.txtPass}		
-			webService.save(Obj,function(data){						
-				if(data[0]=="s"){
+			webService.save(Obj,function(data){									
+				if(data.response=="success"){
 					sessionStorage.setItem("loginSession","success");
-					var data = sessionStorage.getItem('loginSession');					
+					localStorage.setItem("username",data.username);
+					var data = sessionStorage.getItem('loginSession');				
 					if(data == "success"){
 						window.location.assign('/index');	
 					}										

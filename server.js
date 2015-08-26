@@ -4,6 +4,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 
 /*------ Initialize ------*/
+
 var app = express();
 var ip = require('ip');
 var crypto = require('crypto'),
@@ -30,13 +31,22 @@ app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true}
 app.engine('html',require('ejs').renderFile); // render HTML Files
 app.use('/public',express.static(__dirname+'/public')); // Folder Access
 
-/*--------Mysql Connection--------*/
+/*--------Mysql Connection--------
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'us-cdbr-iron-east-02.cleardb.net',
     user: 'bd2ae73e3c90c6',
     password: '37758202',
     database: 'heroku_cfcebe98f88ba97'
+});*/
+
+/*--------Mysql Connection--------*/
+var connection = mysql.createPool({
+    connectionLimit: 3,
+    host: 'localhost',
+    user: 'root123',
+    password: 'root123',
+    database: 'dbcms'
 });
 
 /*------Pages-------*/
@@ -52,23 +62,27 @@ app.get('/index',function(req,res){
 	res.render('index.html');
 })
 
+app.get('/SignUp',function(req,res){	
+	res.render('signup.html');	
+})
+
 app.post('/restService',function(req,res){
 	sess=req.session;
 	sess.reqUser = req.body.txtEmail;
 	var reqPass = req.body.txtPass;	
 	var txtPass = encrypt(reqPass);
 	var sessionId = encrypt(sess.reqUser);
-	var _selQuery = "select * from tbllogin where txtusername='"+sess.reqUser+"' and txtpassword='"+txtPass+"'";
+	var _selQuery = "select * from tblregister where txtusername='"+sess.reqUser+"'";
 	connection.query(_selQuery,function(err, rows, fields){
 		 if (err) { console.log(err.message);}
 		 else{ 
 				if((rows.length)>0){
 					for(var i in rows){
 						var _logId = rows[i].id;
-						var qqUpdate = "update tbllogin set txtsession='"+sessionId+"',userip='"+ip.address()+"',datetime=NOW() where id='"+_logId+"'";						
+						var qqUpdate = "update tblregister set txtsession='"+sessionId+"',txtIP='"+ip.address()+"',datetime=NOW() where id='"+_logId+"'";						
 						connection.query(qqUpdate,function(err,rows,fields){
 							if(err) {console.log(err.message);}
-							else{res.end('success')}
+							else{res.send({response:'success',username: sess.reqUser});	}
 						})
 					}
 				}
@@ -79,22 +93,53 @@ app.post('/restService',function(req,res){
 	})
 })
 
-app.get('/restService',function(req,res){	
-	var querySel = "select * from tbllisting where status = 0";	
+/*--------Register--------*/
+app.post('/regiService',function(req,res){	
+	var reqFirstName = req.body.txtFirstName;
+	var reqUsername = req.body.txtEmailid;
+	var reqPassword = req.body.txtPass;		
+	var txtPass = encrypt(reqPassword);		
+	var _selQuery = "select * from tblregister where txtusername='"+reqUsername+"'";
+	connection.query(_selQuery,function(err, rows, fields){
+		 if (err) { console.log(err.message);}
+		 else{
+			 	if((rows.length)>0){res.send({response:'already'});}				
+				else{
+					var queryInsert = "insert into tblregister(txtfirstname,txtusername,txtpassword,txtIP,datetime)values('"+reqFirstName+"','"+reqUsername+"','"+txtPass+"','"+ip.address()+"',NOW())";
+					console.log(queryInsert);
+					connection.query(queryInsert,function(err,rows,fields){
+						if(err){
+								console.log(err.message);}
+								else{
+									
+									var finalresponse = JSON.stringify(objToJson);
+									res.setHeader('Content-Type', 'application/json');
+									res.end('success'+reqFirstName);
+							}
+						 })
+					}
+			 }
+	})
+})
+
+
+app.get('/getService',function(req,res){	
+	var user_id = req.param('username');	
+	var querySel = "select * from tbllisting where txtusername ='"+user_id+"' and status = 0 order by id ASC";	
 	connection.query(querySel,function(err, rows, fields){
 		if (err){
 			console.log(err);
 			throw err;
 		}
-		var objToJson = rows;
+		/*var objToJson = rows;
 		var response = [];
 		for (var key in rows) {
 			response.push(rows[key]);
 		}
-		objToJson.response = response;
-		var finalresponse = JSON.stringify(objToJson);
+		objToJson.response = response;*/
+		var finalresponse = JSON.stringify(rows);
 		res.setHeader('Content-Type', 'application/json');
-		res.send(finalresponse);		
+		res.send(finalresponse);
 	})
 })
 
@@ -103,13 +148,16 @@ app.post('/listService',function(req,res){
 	var reqLastName = req.body.txtLastname;
 	var reqEmailid = req.body.txtEmailid;
 	var reqPhone = req.body.txtPhone;
-	var queryInsert = "insert into tbllisting (txtName,txtLastname,txtEmailid,txtPhone,datetime)values('"+reqFirstName+"','"+reqLastName+"','"+reqEmailid+"','"+reqPhone+"',NOW())";
+	var reqUsrName = req.body.txtusername;
+	
+	var queryInsert = "insert into tbllisting (txtName,txtLastname,txtEmailid,txtPhone,txtusername,datetime)values('"+reqFirstName+"','"+reqLastName+"','"+reqEmailid+"','"+reqPhone+"','"+reqUsrName+"',NOW())";
+	console.log(queryInsert);
 	connection.query(queryInsert,function(err,rows,fields){
 	if(err){
 			console.log(err.message);}
 			else{res.end('success')
 		}
-	 })
+	 });	
 })
 
 app.post('/delService',function(req,res){
