@@ -168,7 +168,7 @@ app.post('/listService',function(req,res){
 
 app.post('/delService',function(req,res){
 	var reqFirstName = req.body.delRedId;	
-	var queryDel = "delete from tbllisting where id = '"+reqFirstName+"'";	
+	var queryDel = "update tbllisting set status = 1 where id = '"+reqFirstName+"'";	
 	connection.query(queryDel,function(err,rows,fields){
 	if(err){
 			console.log(err.message);}
