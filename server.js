@@ -31,7 +31,7 @@ app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true}
 app.engine('html',require('ejs').renderFile); // render HTML Files
 app.use('/public',express.static(__dirname+'/public')); // Folder Access
 
-/*--------Mysql Connection--------*/
+/*--------Mysql Connection--------
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'us-cdbr-iron-east-02.cleardb.net',
@@ -39,15 +39,16 @@ var connection = mysql.createPool({
     password: '37758202',
     database: 'heroku_cfcebe98f88ba97'
 });
+*/
 
-/*--------Mysql Connection--------
+/*--------Mysql Connection--------*/
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'localhost',
     user: 'root123',
     password: 'root123',
     database: 'dbcms'
-});*/
+});
 
 /*------Pages-------*/
 app.get('/',function(req,res){
@@ -74,7 +75,44 @@ app.post('/restService',function(req,res){
 	var sessionId = encrypt(sess.reqUser);
 	var _selQuery = "select * from tblregister where txtusername='"+sess.reqUser+"'";
 	connection.query(_selQuery,function(err, rows, fields){
-		 if (err) { console.log(err.message);}
+		 if(err) { console.log(err.message);}
+		 else { 
+		 		if((rows.length)>0){
+					var _qqPass = "select * from tblregister where txtusername='"+sess.reqUser+"' and txtpassword='"+txtPass+"'";
+						connection.query(_qqPass,function(err, rows, fields){
+							 if(err) { console.log(err.message)}
+							 else{
+								 	console.log(rows.length);
+									 if((rows.length)>0){										 
+										 for(var i in rows){
+											var _logId = rows[i].id;
+											var qqUpdate = "update tblregister set txtsession='"+sessionId+"',txtIP='"+ip.address()+"',datetime=NOW() where id='"+_logId+"'";						
+											connection.query(qqUpdate,function(err,rows,fields){
+												if(err) {console.log(err.message);}
+												else{res.send({response:'success',username: sess.reqUser});	}
+											})
+										}										 
+										 }
+									 else{
+										res.send({response:'UserName'});										
+									 }
+									
+								}
+					})					
+			 	} 
+				else{
+					res.send({response:'WrongUserPass'});
+				}
+			  }
+		 /*
+		 	var _qqPass = "select * from tblregister where txtusername='"+sess.reqUser+"' and txtpassword='"+txtPass+"'";
+					connection.query(_selQuery,function(err, rows, fields){
+						 if(err) { console.log(err.message)}
+						 else 
+						 	{
+								res.send({response:'UserPass'}); 
+							}
+					})
 		 else{ 
 				if((rows.length)>0){
 					for(var i in rows){
@@ -89,7 +127,7 @@ app.post('/restService',function(req,res){
 				else{
 					res.end('wrong');
 				}
-			}
+			}*/
 	})
 })
 
@@ -121,7 +159,7 @@ app.post('/regiService',function(req,res){
 
 
 app.get('/getService',function(req,res){	
-	var user_id = req.param('username');	
+	var user_id = req.param('username');
 	var querySel = "select * from tbllisting where txtusername ='"+user_id+"' and status = 0 order by id ASC";	
 	connection.query(querySel,function(err, rows, fields){
 		if (err){
@@ -136,7 +174,7 @@ app.get('/getService',function(req,res){
 		objToJson.response = response;*/
 		var finalresponse = JSON.stringify(rows);
 		res.setHeader('Content-Type', 'application/json');
-		res.send(finalresponse);
+		res.send(finalresponse);		
 	})
 })
 

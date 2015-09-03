@@ -73,7 +73,6 @@ app.controller('ListmanagementController',function($scope,webService){
     });
     return count;
   };
-  
   //Records Edit
   $scope.editHandler = function(index){
 	 console.log(index);
