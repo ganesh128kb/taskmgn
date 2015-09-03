@@ -143,12 +143,6 @@ app.get('/getService',function(req,res){
 			console.log(err);
 			throw err;
 		}
-		/*var objToJson = rows;
-		var response = [];
-		for (var key in rows) {
-			response.push(rows[key]);
-		}
-		objToJson.response = response;*/
 		var finalresponse = JSON.stringify(rows);
 		res.setHeader('Content-Type', 'application/json');
 		res.send(finalresponse);		
