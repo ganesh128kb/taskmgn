@@ -4,9 +4,19 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 
 /*------ Initialize ------*/
-
 var app = express();
 var ip = require('ip');
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+	
+/*--------Encrypt--------*/
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
 
 /*--------Body Parsing--------*/
 app.use(bodyParser.json());
@@ -51,7 +61,7 @@ app.get('/',function(req,res){
 
 app.get('/index',function(req,res){
 	sess=req.session;
-	console.log(sess.email);
+	//console.log(sess.email);
 	if(sess.email)	
 	{
 		res.render('index.html');
@@ -72,8 +82,8 @@ app.post('/restService',function(req,res){
 	sess=req.session;
 	sess.email = req.body.txtEmail;
 	var reqPass = req.body.txtPass;	
-	var txtPass = reqPass;
-	var sessionId = sess.email;
+	var txtPass = encrypt(reqPass);
+	var sessionId = encrypt(sess.email);
 	var _selQuery = "select * from tblregister where txtusername='"+sess.email+"'";
 	connection.query(_selQuery,function(err, rows, fields){
 		 if(err) { console.log(err.message);}
@@ -113,7 +123,7 @@ app.post('/regiService',function(req,res){
 	var reqFirstName = req.body.txtFirstName;
 	var reqUsername = req.body.txtEmailid;
 	var reqPassword = req.body.txtPass;		
-	var txtPass = reqPassword;		
+	var txtPass = encrypt(reqPassword);
 	var _selQuery = "select * from tblregister where txtusername='"+reqUsername+"'";
 	connection.query(_selQuery,function(err, rows, fields){
 		 if (err) { console.log(err.message);}
