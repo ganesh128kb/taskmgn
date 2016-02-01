@@ -20,7 +20,7 @@ app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.engine('html',require('ejs').renderFile); // render HTML Files
 app.use('/public',express.static(__dirname+'/public')); // Folder Access
 
-/*--------Mysql Connection--------*/
+/*--------Mysql Connection--------
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'us-cdbr-iron-east-02.cleardb.net',
@@ -28,16 +28,16 @@ var connection = mysql.createPool({
     password: '37758202',
     database: 'heroku_cfcebe98f88ba97'
 });
+*/
 
-
-/*--------Mysql Connection--------
+/*--------Mysql Connection--------*/
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'localhost',
     user: 'root123',
     password: 'root123',
     database: 'dbcms'
-});*/
+});
 
 /*------Pages-------*/
 app.get('/',function(req,res){
