@@ -22,8 +22,7 @@ app.service('regiService',function(webService){
 				}else{
 					alert("Sign up successfully");
 					window.location.assign('/');
-				}
-				
+				}				
 			});
 		}		
 	}	

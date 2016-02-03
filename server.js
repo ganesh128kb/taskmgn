@@ -20,17 +20,16 @@ app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.engine('html',require('ejs').renderFile); // render HTML Files
 app.use('/public',express.static(__dirname+'/public')); // Folder Access
 
-/*--------Mysql Connection--------*/
-
+/*--------Mysql Connection--------
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'us-cdbr-iron-east-02.cleardb.net',
     user: 'bd2ae73e3c90c6',
     password: '37758202',
     database: 'heroku_cfcebe98f88ba97'
-});
+});*/
 
-/*--------Mysql Connection--------
+/*--------Mysql Connection--------*/
 var connection = mysql.createPool({
     connectionLimit: 3,
     host: 'localhost',
@@ -52,16 +51,13 @@ app.get('/',function(req,res){
 app.get('/index',function(req,res){
 	sess=req.session;
 	console.log(sess.email);
-	if(sess.email)	
-	{
+	if(sess.email){
 		res.render('index.html');
 	}
-	else
-	{
+	else{
 		res.write('<h1>Please login first.</h1>');
 		res.end('<a href='+'/'+'>Login</a>');
 	}
-	
 })
 
 app.get('/SignUp',function(req,res){	
@@ -77,7 +73,7 @@ app.post('/restService',function(req,res){
 	var _selQuery = "select * from tblregister where txtusername='"+sess.email+"'";
 	connection.query(_selQuery,function(err, rows, fields){
 		 if(err) { console.log(err.message);}
-		 else { 
+		 else{ 
 		 		if((rows.length)>0){
 					var _qqPass = "select * from tblregister where txtusername='"+sess.email+"' and txtpassword='"+txtPass+"'";
 						connection.query(_qqPass,function(err, rows, fields){
@@ -92,19 +88,19 @@ app.post('/restService',function(req,res){
 												if(err) {console.log(err.message);}
 												else{res.send({response:'success',username: sess.email});	}
 											})
-										}										 
+											}		 
 										 }
 									 else{
-										res.send({response:'UserName'});										
+										res.send({response:'UserName'});
 									 }
-									
+
 								}
-					})					
-			 	} 
+					})
+			 	}
 				else{
 					res.send({response:'WrongUserPass'});
 				}
-			  }		 
+			  }	 
 	})
 })
 
