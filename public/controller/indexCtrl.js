@@ -79,17 +79,7 @@ app.controller('ListmanagementController',function($scope,webService){
 
   //Records Edit  
   $scope.editHandler = function(id){  	 	
-	 for(i in $scope.records){
-	 	var _aa = $scope.records[i].id == id;	 		
-	 		if(_aa){	
-	 			debugger;
-	 		}	 		
-            /*if($scope.records[i].id == id){
-            	//$scope.records = angular.copy($scope.records[i]);
-            	console.log($scope.records);
-            	debugger;
-            }*/
-        }
+	 console.log(id);
   } 
   
   $scope.logHandler = function(){
