@@ -11,7 +11,7 @@ app.controller('ListmanagementController',function($scope,webService){
   $scope.list = webService.getQuery({'username':_username});  
   $scope.list.$promise.then(function(result){
     $scope.records = result;	
-	localStorage.setItem('listRecords', JSON.stringify($scope.records));
+	localStorage.setItem('listRecords', JSON.stringify($scope.records));	
   });
 	
   $scope.markAll = false;
